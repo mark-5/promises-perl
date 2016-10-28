@@ -151,7 +151,7 @@ sub _wrap {
             @results = do { $f->(@_) };
             1;
         }
-            || do { $error = $@ || 'Unknown reason' };
+            || do { $error = $@ // 'Unknown reason' };
 
         if ($error) {
             $d->reject($error);
