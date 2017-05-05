@@ -48,6 +48,16 @@ sub collect {
     my $remaining = scalar @promises;
     foreach my $i ( 0 .. $#promises ) {
         my $p = $promises[$i];
+
+        unless ( 
+            grep { ref $p eq $_ }
+                 qw/ Promises::Promise Promises::Deferred / 
+        ) {
+            $results->[$i] = [ $p ];
+            $remaining--;
+            next;
+        }
+
         $p->then(
             sub {
                 $results->[$i] = [@_];
@@ -352,6 +362,22 @@ object will be an array of all the results (or errors) of each
 of the C<@promises> in the order in which they where passed
 to C<collect> originally.
 
+If C<collect> is passed a value that is not a promise, it'll be wrapped
+in an arrayref and passed through. 
+
+    my $p1 = deferred;
+    my $p2 = deferred;
+    $p1->resolve(1);
+    $p2->resolve(2);
+
+    collect(
+        $p1,
+        'not a promise',
+        $p2,
+    )->then(sub{
+        print join ' ', map { @$_ } @_; # => "1 not a promise 2"
+    })
+
 =item C<collect_props( key1 => $promise1, key2 => $promise2, ... )>
 
 Like C<collect()>, but will yield a hashref composed of the given keys 
@@ -395,7 +421,6 @@ could be rewritten as
       },
       sub { $cv->croak( 'ERROR' ) }
   );
-
 
 =back
 
