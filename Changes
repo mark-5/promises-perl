@@ -14,6 +14,7 @@ Revision history for Perl extension Promises
   - add methods `resolved`, `rejected` and `deferred` now accept a coderef.
     (GH#50, yanick)
   - add new function 'collect_props'. (GH#52, yanick)
+  - allows non-promises in 'collect'. (GH#53, yanick)
 
   [MISC]
   - skip tests if AnyEvent is not installed (GH#42, yanick)
