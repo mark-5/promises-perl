@@ -40,6 +40,8 @@ t/006-thenable.t
 t/007_callable.t
 t/010-collect.t
 t/011-collect-w-error.t
+t/012-collect-props.t
+t/013-collect-props-w-error.t
 t/020-chaining.t
 t/021-chaining-errors.t
 t/025-recursion.t
