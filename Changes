@@ -1,7 +1,20 @@
 Revision history for Perl extension Promises
 
 {NEXT}
+
+  [DOCUMENTATION]
   - doc fix from Amelia Ireland (RT#107559)
+  - fix typos in docs (GH#43, yanick)
+  - POD fixes. (GH#39, hatorikibble) 
+  - fix Mojo example (GH#41, InfinityGone)
+
+  [IMPROVEMENT]
+  - add `is_done` predicate. (GH#45, yanick)
+  - add `chain` method. (GH#47, yanick)
+
+  [MISC]
+  - skip tests if AnyEvent is not installed (GH#42, yanick)
+  - add a META.json (GH#40, hatorikibble)
 
 0.94 Monday, December 29, 2014
   - fixing the other side of the AutoPrereqs 
