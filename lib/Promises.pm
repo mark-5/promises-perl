@@ -31,9 +31,7 @@ sub deferred(;&) {
 
     if ( my $code = shift ) {
         $promise->resolve;
-        return $promise->then(sub{
-            $code->($promise);
-        });
+        return $promise->then(sub{ $code->() });
     }
 
     return $promise;
