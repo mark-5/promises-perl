@@ -11,6 +11,8 @@ Revision history for Perl extension Promises
   [IMPROVEMENT]
   - add `is_done` predicate. (GH#45, yanick)
   - add `chain` method. (GH#47, yanick)
+  - add methods `resolved`, `rejected` and `deferred` now accept a coderef.
+    (GH#50, yanick)
 
   [MISC]
   - skip tests if AnyEvent is not installed (GH#42, yanick)
