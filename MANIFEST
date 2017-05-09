@@ -54,6 +54,8 @@ t/051-exceptions-pp-anyevent.t
 t/052-exceptions-ev-anyevent.t
 t/053-exceptions-mojo.t
 t/060-free-refs.t
+t/070-accepted-rejected.t
+t/080-deferred-as-sub.t
 t/lib/AsyncUtil.pm
 t/lib/NoEV.pm
 xt/release/unused-vars.t
