@@ -61,4 +61,5 @@ t/070-accepted-rejected.t
 t/080-deferred-as-sub.t
 t/lib/AsyncUtil.pm
 t/lib/NoEV.pm
+t/warnings.t
 xt/release/unused-vars.t

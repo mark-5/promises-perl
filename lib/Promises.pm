@@ -8,11 +8,46 @@ use warnings;
 use Promises::Deferred;
 our $Backend = 'Promises::Deferred';
 
+our $WARN_ON_UNHANDLED_REJECT = 0;
+
 use Sub::Exporter -setup => {
-    collectors => [ 'backend' => \'_set_backend' ],
+    collectors => [ 
+        'backend' => \'_set_backend',
+        'warn_on_unhandled_reject' => \'_set_warn_on_unhandled_reject',
+    ],
     exports    => [qw[ deferred collect resolved rejected collect_props 
         flat_collect ]]
 };
+
+sub _set_warn_on_unhandled_reject {
+    my( $class, $arg ) = @_;
+
+    if( $WARN_ON_UNHANDLED_REJECT = $arg->[0] ) {
+        # only brings the big guns if asked for
+
+        *Promises::Deferred::DESTROY = sub {
+    
+            return unless $WARN_ON_UNHANDLED_REJECT;
+
+            my $self = shift;
+
+            return unless
+                $self->is_rejected and not $self->{_reject_was_handled};
+
+            require Data::Dumper;
+
+            my $dump =
+                Data::Dumper->new([$self->result])->Terse(1)->Dump;
+
+            chomp $dump;
+            $dump =~ s/\n/ /g;
+
+            warn "Promise's rejection ", $dump,
+                " was not handled",
+                ( ' at ', join ' line ', @{$self->{_caller}} ) x !! $self->{_caller}, "\n";
+        };
+    }
+}
 
 sub _set_backend {
     my ( $class, $arg ) = @_;
@@ -450,6 +485,27 @@ could be rewritten as
       },
       sub { $cv->croak( 'ERROR' ) }
   );
+
+=item C<warn_on_unhandled_reject => [ $boolean ]
+
+By default promises that are rejected but aren't subsequently C<catch>ed
+are silent failures. This is by design, but sometimes during development you
+might want to get warn of those instances. If so, you can  use the
+C<warn_on_unhandled_reject> directive which, if given a true value,
+will have rejected and uncaught promises warn when they get destroyed (which is
+likely to be at the end of the program).
+
+    use Promises warn_on_unhandled_reject => [ 1 ], 'deferred';
+
+    my $p = deferred();
+
+    $p->then(sub { die "ooops\n" })
+      ->then( sub { "something else" } );
+
+    $p->resolve;
+
+    # will trigger warning 
+    # "Promise's rejection [ 'ooops' ] was not handled at my/script.pl line 123"
 
 =back
 

@@ -16,6 +16,7 @@ Revision history for Perl extension Promises
   - add new function 'collect_props'. (GH#52, yanick)
   - allows non-promises in 'collect'. (GH#53, yanick)
   - add Promises::Sub. (GH#54, yanick)
+  - add $WARN_ON_UNHANDLED_REJECT. (GH#37, ruz + yanick)
 
   [MISC]
   - skip tests if AnyEvent is not installed (GH#42, yanick)
