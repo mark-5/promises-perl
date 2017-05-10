@@ -18,6 +18,10 @@ Revision history for Perl extension Promises
   - add Promises::Sub. (GH#54, yanick)
   - add $WARN_ON_UNHANDLED_REJECT. (GH#37, ruz + yanick)
 
+  [BUG FIXES]
+  - fix case where exception exists but is false. (GH#48, stuckdownawell +
+    yanick)
+
   [MISC]
   - skip tests if AnyEvent is not installed (GH#42, yanick)
   - add a META.json (GH#40, hatorikibble)
