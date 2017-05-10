@@ -6,7 +6,6 @@ MANIFEST
 META.json
 META.yml
 Makefile.PL
-README.md
 README.mkdn
 SIGNATURE
 cpanfile
