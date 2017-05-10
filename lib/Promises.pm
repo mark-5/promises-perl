@@ -10,7 +10,8 @@ our $Backend = 'Promises::Deferred';
 
 use Sub::Exporter -setup => {
     collectors => [ 'backend' => \'_set_backend' ],
-    exports    => [qw[ deferred collect resolved rejected collect_props ]]
+    exports    => [qw[ deferred collect resolved rejected collect_props 
+        flat_collect ]]
 };
 
 sub _set_backend {
@@ -39,6 +40,8 @@ sub deferred(;&) {
 
 sub resolved { deferred->resolve(@_) }
 sub rejected { deferred->reject(@_)  }
+
+sub flat_collect { collect(@_)->then( sub { map { @$_ } @_ }) }
 
 sub collect {
     my @promises = @_;
@@ -377,6 +380,32 @@ in an arrayref and passed through.
     )->then(sub{
         print join ' ', map { @$_ } @_; # => "1 not a promise 2"
     })
+
+=item C<flat_collect( @promises )>
+
+Like C<collect>, but flatten its returned arrayref into a single
+list. 
+
+In other words, the previous example
+
+    collect(
+        $p1,
+        'not a promise',
+        $p2,
+    )->then(sub{
+        print join ' ', map { @$_ } @_; # => "1 not a promise 2"
+    })
+
+can be rewritten as
+
+    flat_collect(
+        $p1,
+        'not a promise',
+        $p2,
+    )->then(sub{
+        print join ' ', @_; # => "1 not a promise 2"
+    })
+
 
 =item C<collect_props( key1 => $promise1, key2 => $promise2, ... )>
 
